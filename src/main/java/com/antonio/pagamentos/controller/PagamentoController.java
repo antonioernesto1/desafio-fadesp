@@ -31,7 +31,7 @@ public class PagamentoController {
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<ApiResponse<PagamentoResponse>> alterarStatus(@PathVariable Long id, @RequestBody AlterarStatusPagamentoRequest request) {
+    public ResponseEntity<ApiResponse<PagamentoResponse>> alterarStatus(@PathVariable Long id, @RequestBody @Valid AlterarStatusPagamentoRequest request) {
         PagamentoResponse pagamento = service.alterarStatus(id, request);
         return ResponseEntity
                 .ok(ApiResponse.sucesso(pagamento, "Status do pagamento alterado com sucesso"));
@@ -45,10 +45,11 @@ public class PagamentoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PagamentoResponse>> listar(
+    public ResponseEntity<ApiResponse<List<PagamentoResponse>>> listar(
             @RequestParam(required = false) Integer codigoDebito,
             @RequestParam(required = false) String cpfCnpj,
             @RequestParam(required = false) StatusPagamento status) {
-        return ResponseEntity.ok(service.listar(codigoDebito, cpfCnpj, status));
+        List<PagamentoResponse> pagamentos = service.listar(codigoDebito, cpfCnpj, status);
+        return ResponseEntity.ok(ApiResponse.sucesso(pagamentos, "Pagamentos listados com sucesso"));
     }
 }
