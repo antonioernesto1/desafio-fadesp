@@ -6,9 +6,13 @@ import com.antonio.pagamentos.dto.request.AlterarStatusPagamentoRequest;
 import com.antonio.pagamentos.dto.request.CriarPagamentoRequest;
 import com.antonio.pagamentos.dto.response.PagamentoResponse;
 import com.antonio.pagamentos.repository.PagamentoRepository;
+import com.antonio.pagamentos.repository.PagamentoSpecification;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class PagamentoService {
@@ -47,5 +51,17 @@ public class PagamentoService {
 
         pagamento.inativar();
         pagamentoRepository.save(pagamento);
+    }
+
+    public List<PagamentoResponse> listar(Integer codigoDebito, String cpfCnpj, StatusPagamento status) {
+        Specification<Pagamento> filtros = Specification
+                .where(PagamentoSpecification.porCodigoDebito(codigoDebito))
+                .and(PagamentoSpecification.porCpfCnpj(cpfCnpj))
+                .and(PagamentoSpecification.porStatus(status));
+
+        return pagamentoRepository.findAll(filtros)
+                .stream()
+                .map(PagamentoResponse::new)
+                .toList();
     }
 }

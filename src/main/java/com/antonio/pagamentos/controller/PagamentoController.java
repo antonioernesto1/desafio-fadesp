@@ -1,5 +1,6 @@
 package com.antonio.pagamentos.controller;
 
+import com.antonio.pagamentos.domain.enums.StatusPagamento;
 import com.antonio.pagamentos.dto.request.AlterarStatusPagamentoRequest;
 import com.antonio.pagamentos.dto.request.CriarPagamentoRequest;
 import com.antonio.pagamentos.dto.response.ApiResponse;
@@ -9,6 +10,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pagamentos")
@@ -39,5 +42,13 @@ public class PagamentoController {
         service.inativar(id);
         return ResponseEntity
                 .ok(ApiResponse.sucesso(null, "Pagamento inativado com sucesso"));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PagamentoResponse>> listar(
+            @RequestParam(required = false) Integer codigoDebito,
+            @RequestParam(required = false) String cpfCnpj,
+            @RequestParam(required = false) StatusPagamento status) {
+        return ResponseEntity.ok(service.listar(codigoDebito, cpfCnpj, status));
     }
 }

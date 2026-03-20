@@ -21,7 +21,7 @@ public class PagamentoResponse {
     public PagamentoResponse(Pagamento pagamento) {
         this.id = pagamento.getId();
         this.codigoDebito = pagamento.getCodigoDebito();
-        this.cpfCnpj = pagamento.getCpfCnpjPagador();
+        this.cpfCnpj = pagamento.getCpfCnpj();
         this.metodoPagamento = pagamento.getMetodoPagamento();
         this.numeroCartao = pagamento.getNumeroCartao();
         this.valor = pagamento.getValor();

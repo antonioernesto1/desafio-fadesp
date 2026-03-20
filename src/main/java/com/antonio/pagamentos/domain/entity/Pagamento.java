@@ -22,8 +22,8 @@ public class Pagamento {
     @Column(name = "cod_debito")
     private Integer codigoDebito;
 
-    @Column(name = "cpf_cnpj_pagador", nullable = false)
-    private String cpfCnpjPagador;
+    @Column(name = "cpf_cnpj", nullable = false)
+    private String cpfCnpj;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "metodo_pagamento", nullable = false)
@@ -39,11 +39,11 @@ public class Pagamento {
     @Column(name = "status")
     private StatusPagamento status;
 
-    public Pagamento(Integer codigoDebito, String cpfCnpjPagador, MetodoPagamento metodoPagamento, String numeroCartao, BigDecimal valor) {
+    public Pagamento(Integer codigoDebito, String cpfCnpj, MetodoPagamento metodoPagamento, String numeroCartao, BigDecimal valor) {
         validarNumeroCartao(metodoPagamento, numeroCartao);
         
         this.codigoDebito = codigoDebito;
-        this.cpfCnpjPagador = cpfCnpjPagador;
+        this.cpfCnpj = cpfCnpj;
         this.metodoPagamento = metodoPagamento;
         this.numeroCartao = numeroCartao;
         this.valor = valor;
