@@ -40,12 +40,30 @@ public class Pagamento {
     private StatusPagamento status;
 
     public Pagamento(Integer codigoDebito, String cpfCnpjPagador, MetodoPagamento metodoPagamento, String numeroCartao, BigDecimal valor) {
+        validarNumeroCartao(metodoPagamento, numeroCartao);
+        
         this.codigoDebito = codigoDebito;
         this.cpfCnpjPagador = cpfCnpjPagador;
         this.metodoPagamento = metodoPagamento;
         this.numeroCartao = numeroCartao;
         this.valor = valor;
         this.status = StatusPagamento.PENDENTE;
+    }
+
+    private void validarNumeroCartao(MetodoPagamento metodo, String numeroCartao) {
+        boolean temCartao = numeroCartao != null && !numeroCartao.isBlank();
+        
+        if (exigeCartao(metodo) && !temCartao) {
+            throw new IllegalArgumentException("Número do cartão é obrigatório para pagamentos com cartão de crédito ou débito.");
+        }
+        
+        if (!exigeCartao(metodo) && temCartao) {
+            throw new IllegalArgumentException("Número do cartão não deve ser informado para pagamentos com boleto ou PIX.");
+        }
+    }
+
+    private boolean exigeCartao(MetodoPagamento metodo) {
+        return metodo == MetodoPagamento.CARTAO_CREDITO || metodo == MetodoPagamento.CARTAO_DEBITO;
     }
 
     public void marcarComSucesso() {
