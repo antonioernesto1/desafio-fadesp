@@ -33,4 +33,11 @@ public class PagamentoController {
         return ResponseEntity
                 .ok(ApiResponse.sucesso(pagamento, "Status do pagamento alterado com sucesso"));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> inativar(@PathVariable Long id) {
+        service.inativar(id);
+        return ResponseEntity
+                .ok(ApiResponse.sucesso(null, "Pagamento inativado com sucesso"));
+    }
 }

@@ -39,4 +39,13 @@ public class PagamentoService {
 
         return new PagamentoResponse(pagamentoRepository.save(pagamento));
     }
+
+    @Transactional
+    public void inativar(Long id){
+        Pagamento pagamento = pagamentoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pagamento não encontrado"));
+
+        pagamento.inativar();
+        pagamentoRepository.save(pagamento);
+    }
 }
