@@ -1,5 +1,6 @@
 package com.antonio.pagamentos.controller;
 
+import com.antonio.pagamentos.dto.request.AlterarStatusPagamentoRequest;
 import com.antonio.pagamentos.dto.request.CriarPagamentoRequest;
 import com.antonio.pagamentos.dto.response.ApiResponse;
 import com.antonio.pagamentos.dto.response.PagamentoResponse;
@@ -7,10 +8,7 @@ import com.antonio.pagamentos.service.PagamentoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pagamentos")
@@ -27,5 +25,12 @@ public class PagamentoController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(ApiResponse.sucesso(pagamento, "Pagamento criado com sucesso"));
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ApiResponse<PagamentoResponse>> alterarStatus(@PathVariable Long id, @RequestBody AlterarStatusPagamentoRequest request) {
+        PagamentoResponse pagamento = service.alterarStatus(id, request);
+        return ResponseEntity
+                .ok(ApiResponse.sucesso(pagamento, "Status do pagamento alterado com sucesso"));
     }
 }

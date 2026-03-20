@@ -66,17 +66,28 @@ public class Pagamento {
         return metodo == MetodoPagamento.CARTAO_CREDITO || metodo == MetodoPagamento.CARTAO_DEBITO;
     }
 
-    public void marcarComSucesso() {
+    public void alterarStatus(StatusPagamento novoStatus){
+        switch (novoStatus){
+            case PROCESSADO_SUCESSO -> marcarComSucesso();
+            case PROCESSADO_FALHA -> marcarComFalha();
+            case PENDENTE -> retornarParaPendente();
+            default -> throw new TransicaoStatusInvalidaException(
+                    "Transição para o status '" + novoStatus + "' não é permitida via atualização."
+            );
+        }
+    }
+
+    private void marcarComSucesso() {
         validarTransicaoDePendente("Processado com Sucesso");
         this.status = StatusPagamento.PROCESSADO_SUCESSO;
     }
 
-    public void marcarComFalha() {
+    private void marcarComFalha() {
         validarTransicaoDePendente("Processado com Falha");
         this.status = StatusPagamento.PROCESSADO_FALHA;
     }
 
-    public void reprocessar() {
+    private void retornarParaPendente() {
         if (this.status != StatusPagamento.PROCESSADO_FALHA) {
             throw new TransicaoStatusInvalidaException(
                     "Apenas pagamentos com falha podem voltar para Pendente."
