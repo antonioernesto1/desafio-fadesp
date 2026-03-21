@@ -30,6 +30,7 @@ No restante da aplicação, as camadas estão organizadas em:
 - Bean Validation (Jakarta Validation)
 - H2 Database
 - Lombok
+- Springdoc OpenAPI (Swagger UI)
 - JUnit 5 e Mockito
 
 ## Como executar
@@ -54,6 +55,17 @@ No Linux/macOS:
 ```
 
 A API sobe, por padrão, em `http://localhost:8080`.
+
+## Documentacao da API (Swagger/OpenAPI)
+
+A documentacao interativa da API esta disponivel via Swagger UI.
+
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8080/api-docs`
+
+Esses caminhos foram configurados em `src/main/resources/application.properties` pelas propriedades:
+- `springdoc.swagger-ui.path=/swagger-ui.html`
+- `springdoc.api-docs.path=/api-docs`
 
 ## Banco de dados e console H2
 
